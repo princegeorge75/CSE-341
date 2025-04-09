@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const setupSwagger = require('./swagger');
 require("dotenv").config();
 
 const app = express();
@@ -19,12 +20,14 @@ const options = {
     apis: ['./server.js'], // Path to the API docs (server.js or other route files)
   };
   
-
 const swaggerSpec = swaggerJsdoc(options);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+const cors = require('cors');
+app.use(cors());
 
 const contactsRouter = require("./routes/contacts"); //Import routes
 app.use("/contacts", contactsRouter); //Connect routes to Express app
+setupSwagger(app);
 
 //Connect to MongoDB
 mongoose    

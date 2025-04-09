@@ -1,16 +1,63 @@
-const swaggerAutogen = require('swagger-autogen')();
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
-const doc = {
-    info:{
-        title: 'Users Api',
-        description: 'Users Api'
+const options = {
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Contacts API',
+        version: '1.0.0',
+        description: 'A simple API for managing contacts'
+      },
+      servers: [
+        {
+          url: 'https://cse-341-n1ty.onrender.com',
+          description: 'Live server'
+        }
+      ],
+      components: {
+        schemas: {
+          Contact: {
+            type: 'object',
+            properties: {
+              _id: {
+                type: 'string',
+                description: 'MongoDB unique identifier'
+              },
+              firstName: {
+                type: 'string',
+                example: 'John'
+              },
+              lastName: {
+                type: 'string',
+                example: 'Doe'
+              },
+              email: {
+                type: 'string',
+                example: 'john.doe@example.com'
+              },
+              favoriteColor: {
+                type: 'string',
+                example: 'Blue'
+              },
+              birthday: {
+                type: 'string',
+                format: 'date',
+                example: '2000-01-01'
+              }
+            }
+          }
+        }
+      }      
     },
-    host: 'localhost: 3000',
-    schemes: ['https', 'http' ]
-};
+    apis: ['./routes/*.js'],
+  };
+  
 
-const outputFile = '/swagger.json';
-const endpointsFiles = ['./routes/index.js'];
+const swaggerSpec = swaggerJSDoc(options);
 
-//this will generate swagger.json
-swaggerAutogen(outputFile, endpointsFiles, doc);
+function setupSwagger(app) {
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+}
+
+module.exports = setupSwagger;
