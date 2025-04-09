@@ -38,3 +38,7 @@ mongoose
 app.listen(process.env.PORT, () => {
     console.log(`Server is actively running on port ${process.env.PORT}`)
 });
+
+app.get('/', (req, res) => {
+  res.send('Welcome to the Contacts API. Access the documentation at /api-docs');
+});
