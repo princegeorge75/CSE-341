@@ -36,5 +36,5 @@ mongoose
     .catch((err) => console.error(err));
 
 app.listen(process.env.PORT, () => {
-    console.log(`Sever is actively running on port ${process.env.PORT}`)
+    console.log(`Server is actively running on port ${process.env.PORT}`)
 });
